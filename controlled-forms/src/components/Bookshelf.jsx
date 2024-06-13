@@ -4,24 +4,22 @@ import { useState } from "react"
 export default function Bookshelf() {
 
     const [books, setBooks] = useState([
-        { title: 'A Little Life', author: 'Hanya Yanagihara' },
-        { title: 'Homeland', author: 'R.A. Salvatore'}
-    ])
+        { title: 'Fourth Wing', author: 'Rebecca Yarros' },
+        { title: 'The Lion, the Witch and the Wardrobe', author: 'C.S. Lewis' },
+      ])
 
-    const [newBook, setNewBook] = useState([
-        { title: '', author: ''}
-    ])
+      const [newBook, setNewBook] = useState({title: '', author: ''})
 
-    const handleInputChange = (e) => {
-        setNewBook({...newBook, [e.target.id] : e.target.value})
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(newBook) 
-        setBooks ({...books, [e.target.id] : e.target.value})
-        setNewBook({ title: '', author: '' })
-    }
+      const handleInputChange = (event) => {
+        setNewBook({...newBook, [event.target.id] : event.target.value })
+      }
+      
+      const handleSubmit = (event) => {
+        event.preventDefault()
+        setBooks([...books, newBook])
+        setNewBook({title: '', author: ''}) //reset form 
+        console.log(typeof(books)) //display data from form 
+      }
     return (
 <div className="bookshelfDiv">
   <div className="formDiv">
@@ -30,15 +28,23 @@ export default function Bookshelf() {
             <label htmlFor="title">Title</label>
             <input type="text" id="title"
                     onChange={handleInputChange}
-                    value={books.title} />
+                    value={newBook.title} />
             <label htmlFor="author">Author</label>
             <input type="text" id="author"
                     onChange={handleInputChange}
-                    value={books.author}/>
+                    value={newBook.author}/>
                     <button type="submit">submit</button>
         </form>
   </div>
-  <div className="bookCardsDiv">{/* Book cards will display here */}</div>
+  <div className="bookCardsDiv">
+    {books.map((book, index) =>
+            <div className="bookCard"key ={index}>
+                <h2>{book.title}</h2>
+                <h3>{book.author}</h3>
+                </div>
+                )
+      
+        }</div>
 </div>
     )
 }
